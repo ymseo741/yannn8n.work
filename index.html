@@ -402,11 +402,12 @@
     <path d="M508 240 q180 70 220 345" opacity="0.35"><animate attributeName="stroke-dasharray" values="0 600;400 200;0 600" dur="12s" begin="11s" repeatCount="indefinite"/></path>
   </g>
 
-  <!-- R4: y~680 (±3 cols centered) -->
+  <!-- R4: y~680 (cols 0-3) -->
   <g fill="none" stroke="url(#lg)" stroke-width="0.6" filter="url(#fg)">
-    <path d="M494 240 q-90 100-160 445" opacity="0.3"><animate attributeName="stroke-dasharray" values="0 650;450 200;0 650" dur="13s" begin="12s" repeatCount="indefinite"/></path>
-    <path d="M500 240 q0 100 0 445" opacity="0.3"><animate attributeName="stroke-dasharray" values="0 650;450 200;0 650" dur="13s" begin="13s" repeatCount="indefinite"/></path>
-    <path d="M506 240 q90 100 160 445" opacity="0.3"><animate attributeName="stroke-dasharray" values="0 650;450 200;0 650" dur="13s" begin="14s" repeatCount="indefinite"/></path>
+    <path d="M493 240 q-80 90-170 445" opacity="0.3"><animate attributeName="stroke-dasharray" values="0 650;450 200;0 650" dur="13s" begin="12s" repeatCount="indefinite"/></path>
+    <path d="M497 240 q-30 90-60 445" opacity="0.3"><animate attributeName="stroke-dasharray" values="0 650;450 200;0 650" dur="13s" begin="13s" repeatCount="indefinite"/></path>
+    <path d="M503 240 q30 90 60 445" opacity="0.3"><animate attributeName="stroke-dasharray" values="0 650;450 200;0 650" dur="13s" begin="14s" repeatCount="indefinite"/></path>
+    <path d="M507 240 q80 90 170 445" opacity="0.3"><animate attributeName="stroke-dasharray" values="0 650;450 200;0 650" dur="13s" begin="15s" repeatCount="indefinite"/></path>
   </g>
 </svg>
 
@@ -444,6 +445,7 @@ const services = [
   { name: 'Oracle VPC', url: 'https://cloud.oracle.com',       icon: '☁️', desc: 'Cloud Server Console',       tag: 'cloud',   cls: 'dot-cloud' },
   { name: 'AgentMail',  url: 'https://agentmail.to',           icon: '✉️', desc: 'AI Agent Mailbox',           tag: 'ext',     cls: 'dot-external' },
   { name: 'FlowStates',url: 'https://flowstates.netlify.app', icon: '🎵', desc: '인터렉티브 콘텐츠 뷰어',         tag: 'netlify', cls: 'dot-external' },
+  { name: 'Tripverse', url: 'https://tripversemate.netlify.app',icon: '✈️', desc: '여행 플래너 메이트',            tag: 'netlify', cls: 'dot-external' },
 ];
 
 function renderGrid() {
