@@ -15,7 +15,9 @@
     --gold: #c49a3c;
     --gold-glow: rgba(196,154,60,0.15);
     --green: #4ade80;
-    --cyan: #4fc3f7;
+    --cyan: #20c7ff;
+    --magenta: #ff3f9c;
+    --red: #ff3b30;
     --panel: rgba(8,12,24,0.85);
     --panel-border: rgba(196,154,60,0.12);
     --text: #c8d0d8;
@@ -23,6 +25,8 @@
     --font: 'Noto Sans KR', sans-serif;
     --mono: 'JetBrains Mono', monospace;
     --display: 'Orbitron', monospace;
+    --frame: #111827;
+    --frame-hi: #1f2937;
   }
 
   html, body {
@@ -38,6 +42,10 @@
     flex-direction: column;
     padding: 10px 12px;
     gap: 8px;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 12%, rgba(255,63,156,0.08), transparent 62%),
+      radial-gradient(ellipse 70% 55% at 50% 28%, rgba(32,199,255,0.06), transparent 65%),
+      linear-gradient(180deg, #02040a 0%, #04060c 100%);
   }
 
   /* ═══ TOP BAR ═══ */
@@ -104,17 +112,359 @@
     background: rgba(196,154,60,0.08);
   }
 
-  /* ═══ VIEWPORT (spaceship window) ═══ */
-  .viewport {
+  /* ═══ COCKPIT SHELL ═══ */
+  .cockpit-shell {
     flex: 1;
     min-height: 0;
     position: relative;
-    border-radius: 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 9px 12px 214px;
+    border-radius: 22px 22px 8px 8px;
+    background:
+      radial-gradient(ellipse 70% 34% at 50% 57%, rgba(32,199,255,0.08), transparent 70%),
+      linear-gradient(115deg, rgba(255,255,255,0.04), transparent 30%),
+      linear-gradient(180deg, #03060d 0%, #07111d 45%, #010207 100%);
+    border: 1px solid rgba(32,199,255,0.16);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      inset 0 -22px 50px rgba(0,0,0,0.45),
+      0 18px 45px rgba(0,0,0,0.35);
     overflow: hidden;
-    border: 1px solid rgba(196,154,60,0.1);
+  }
+
+  .cockpit-shell::before {
+    content: '';
+    position: absolute;
+    inset: 8px 4% 196px;
+    border-radius: 42% 42% 18px 18px / 18% 18% 14px 14px;
+    border: 9px solid rgba(0,0,0,0.58);
+    border-bottom-width: 14px;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .cockpit-shell::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50%;
+    background:
+      radial-gradient(ellipse 54% 32% at 50% 8%, rgba(32,199,255,0.1), transparent 72%),
+      linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.12) 18%, rgba(0,0,0,0.88) 100%);
+    clip-path: polygon(0 34%, 10% 9%, 32% 0, 68% 0, 90% 9%, 100% 34%, 100% 100%, 0 100%);
+    pointer-events: none;
+    z-index: 6;
+  }
+
+  .cockpit-art {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 6;
+  }
+
+  .windshield-strut {
+    position: absolute;
+    top: 15px;
+    bottom: 216px;
+    width: clamp(9px, 0.9vw, 15px);
+    background:
+      linear-gradient(90deg, rgba(0,0,0,0.62), rgba(119,139,178,0.72) 40%, rgba(180,194,224,0.45) 50%, rgba(28,36,56,0.72));
+    box-shadow:
+      inset 1px 0 0 rgba(255,255,255,0.16),
+      inset -1px 0 0 rgba(0,0,0,0.7),
+      0 0 18px rgba(0,0,0,0.4);
+    opacity: 0.46;
+  }
+
+  .windshield-strut.left {
+    left: 22.5%;
+    transform: skewX(-21deg);
+    transform-origin: bottom;
+  }
+
+  .windshield-strut.right {
+    right: 22.5%;
+    transform: skewX(21deg);
+    transform-origin: bottom;
+  }
+
+  .windshield-strut.top {
+    top: 22px;
+    left: 20%;
+    right: 20%;
+    bottom: auto;
+    width: auto;
+    height: clamp(10px, 1vw, 15px);
+    transform: none;
+    background:
+      linear-gradient(180deg, rgba(167,184,221,0.62), rgba(47,58,83,0.86));
+    clip-path: polygon(2% 0, 98% 0, 100% 100%, 0 100%);
+  }
+
+  .console-deck {
+    position: absolute;
+    left: 1.2%;
+    right: 1.2%;
+    bottom: 40px;
+    height: 220px;
+    z-index: 7;
+    background:
+      radial-gradient(ellipse 32% 48% at 50% 100%, rgba(255,63,156,0.08), transparent 68%),
+      radial-gradient(ellipse 50% 16% at 50% 9%, rgba(32,199,255,0.16), transparent 74%),
+      linear-gradient(90deg, rgba(4,9,16,0.98), rgba(7,17,30,0.96) 16%, rgba(17,31,50,0.98) 50%, rgba(7,17,30,0.96) 84%, rgba(4,9,16,0.98)),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 72px);
+    clip-path: polygon(0 52%, 10% 18%, 28% 7%, 38% 20%, 62% 20%, 72% 7%, 90% 18%, 100% 52%, 98% 100%, 2% 100%);
+    border-bottom: 1px solid rgba(32,199,255,0.2);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.08),
+      inset 0 -24px 36px rgba(0,0,0,0.62),
+      0 -18px 34px rgba(0,0,0,0.42);
+    pointer-events: none;
+  }
+
+  .console-deck::before,
+  .console-deck::after {
+    content: '';
+    position: absolute;
+    bottom: 38px;
+    width: 25%;
+    height: 112px;
+    border: 1px solid rgba(100,122,158,0.24);
+    background:
+      linear-gradient(90deg, rgba(32,199,255,0.18) 0 18%, transparent 18% 22%, rgba(255,63,156,0.13) 22% 35%, transparent 35%),
+      repeating-linear-gradient(180deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 11px),
+      rgba(3,6,12,0.56);
+    box-shadow: inset 0 0 18px rgba(0,0,0,0.6);
+  }
+
+  .console-deck::before {
+    left: 3.6%;
+    transform: skewY(-7deg);
+  }
+
+  .console-deck::after {
+    right: 3.6%;
+    transform: skewY(7deg);
+  }
+
+  .center-console {
+    position: absolute;
+    left: 35.5%;
+    right: 35.5%;
+    bottom: 42px;
+    height: 190px;
+    z-index: 8;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 74%, rgba(255,59,48,0.86) 0 5px, rgba(255,59,48,0.18) 7px 21px, transparent 22px),
+      linear-gradient(180deg, rgba(32,199,255,0.34), rgba(32,199,255,0.05) 32%, transparent 33%),
+      linear-gradient(180deg, rgba(33,43,66,0.94), rgba(6,9,17,0.96));
+    clip-path: polygon(13% 0, 87% 0, 100% 100%, 0 100%);
+    border: 1px solid rgba(196,154,60,0.15);
+    box-shadow:
+      inset 0 0 20px rgba(0,0,0,0.55),
+      0 0 18px rgba(32,199,255,0.1);
+  }
+
+  .center-console::before {
+    content: '';
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    top: 62px;
+    height: 12px;
+    border-radius: 999px;
+    background:
+      linear-gradient(90deg, transparent, rgba(255,63,156,0.85), transparent);
+    box-shadow: 0 0 14px rgba(255,63,156,0.25);
+  }
+
+  .center-console::after {
+    content: '';
+    position: absolute;
+    left: 28%;
+    right: 28%;
+    bottom: 72px;
+    height: 52px;
+    border: 1px solid rgba(32,199,255,0.35);
+    background:
+      repeating-linear-gradient(90deg, rgba(32,199,255,0.22) 0 4px, transparent 4px 9px),
+      rgba(2,7,12,0.62);
+  }
+
+  .gauge {
+    position: absolute;
+    bottom: 152px;
+    z-index: 9;
+    width: clamp(96px, 11vw, 142px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid rgba(32,199,255,0.72);
+    background:
+      radial-gradient(circle, rgba(0,0,0,0.82) 0 47%, transparent 48%),
+      conic-gradient(from -12deg, rgba(32,199,255,0.08), rgba(32,199,255,0.72), rgba(32,199,255,0.08), rgba(255,63,156,0.55), rgba(32,199,255,0.08));
+    box-shadow:
+      0 0 22px rgba(32,199,255,0.22),
+      inset 0 0 18px rgba(32,199,255,0.16);
+  }
+
+  .gauge.left { left: 19%; }
+  .gauge.right { right: 19%; }
+
+  .gauge::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(218,246,255,0.55);
+    background:
+      repeating-conic-gradient(from 0deg, rgba(218,246,255,0.9) 0 1deg, transparent 1deg 10deg);
+    mask: radial-gradient(circle, transparent 0 70%, #000 71%);
+  }
+
+  .gauge::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    width: 3px;
+    height: 34%;
+    border-radius: 999px;
+    background: var(--red);
+    box-shadow: 0 0 10px rgba(255,59,48,0.7);
+    transform-origin: bottom center;
+    transform: rotate(-6deg);
+  }
+
+  .dashboard-screen {
+    position: absolute;
+    bottom: 226px;
+    z-index: 9;
+    height: 72px;
+    border: 1px solid rgba(32,199,255,0.28);
+    background:
+      linear-gradient(90deg, transparent, rgba(32,199,255,0.16) 45% 55%, transparent),
+      repeating-linear-gradient(180deg, rgba(32,199,255,0.12) 0 1px, transparent 1px 10px),
+      rgba(1,8,15,0.84);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.75), 0 0 14px rgba(32,199,255,0.1);
+  }
+
+  .dashboard-screen.left {
+    left: 35%;
+    width: 12%;
+  }
+
+  .dashboard-screen.mid {
+    left: 48%;
+    width: 10%;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(32,199,255,0.34), transparent 28%),
+      repeating-linear-gradient(90deg, rgba(32,199,255,0.16) 0 2px, transparent 2px 9px),
+      rgba(1,8,15,0.86);
+  }
+
+  .dashboard-screen.right {
+    right: 35%;
+    width: 12%;
+    background:
+      linear-gradient(135deg, transparent 0 48%, rgba(255,63,156,0.55) 49% 51%, transparent 52%),
+      linear-gradient(25deg, transparent 0 44%, rgba(32,199,255,0.45) 45% 47%, transparent 48%),
+      rgba(1,8,15,0.86);
+  }
+
+  .side-console {
+    position: absolute;
+    top: 18px;
+    bottom: 16px;
+    width: clamp(42px, 6vw, 76px);
+    z-index: 5;
+    border: 1px solid rgba(196,154,60,0.08);
+    border-radius: 10px;
+    background:
+      linear-gradient(115deg, rgba(255,255,255,0.08), transparent 34%),
+      repeating-linear-gradient(180deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 13px),
+      linear-gradient(180deg, rgba(6,10,20,0.22), rgba(3,5,10,0.38));
+    box-shadow:
+      inset 0 0 24px rgba(0,0,0,0.32),
+      0 0 18px rgba(0,0,0,0.18);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 8px;
+    min-width: 0;
+    pointer-events: none;
+    opacity: 0.74;
+  }
+
+  .side-console.left {
+    left: 18px;
+  }
+
+  .side-console.right {
+    right: 18px;
+  }
+
+  .side-console .rail-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: var(--mono);
+    font-size: 0.48rem;
+    letter-spacing: 0.18em;
+    color: rgba(196,154,60,0.34);
+  }
+
+  .side-console.right .rail-label {
+    align-self: flex-end;
+  }
+
+  .switch-stack {
+    display: grid;
+    gap: 6px;
+  }
+
+  .micro-switch {
+    height: 15px;
+    border-radius: 3px;
+    border: 1px solid rgba(196,154,60,0.08);
+    background:
+      linear-gradient(90deg, rgba(74,222,128,0.35), rgba(74,222,128,0.06) 36%, rgba(255,255,255,0.02));
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.4);
+  }
+
+  .micro-switch:nth-child(2n) {
+    background: linear-gradient(90deg, rgba(79,195,247,0.34), rgba(79,195,247,0.06) 36%, rgba(255,255,255,0.02));
+  }
+
+  .micro-switch:nth-child(3n) {
+    background: linear-gradient(90deg, rgba(196,154,60,0.32), rgba(196,154,60,0.05) 36%, rgba(255,255,255,0.02));
+  }
+
+  .viewport-wrap {
+    position: relative;
+    min-height: 0;
+    z-index: 1;
+    display: grid;
+    grid-column: 1;
+  }
+
+  /* ═══ VIEWPORT (spaceship window) ═══ */
+  .viewport {
+    min-height: 0;
+    position: relative;
+    border-radius: 22px 22px 52px 52px / 22px 22px 20px 20px;
+    overflow: hidden;
+    border: 1px solid rgba(32,199,255,0.22);
+    clip-path: polygon(6% 0, 94% 0, 100% 25%, 96% 83%, 68% 100%, 32% 100%, 4% 83%, 0 25%);
     background: #000;
     box-shadow:
       inset 0 0 60px rgba(0,0,0,0.8),
+      inset 0 0 0 8px rgba(0,0,0,0.2),
       0 0 30px rgba(196,154,60,0.03);
   }
 
@@ -122,8 +472,12 @@
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 12px;
-    border: 1px solid rgba(196,154,60,0.06);
+    border-radius: inherit;
+    clip-path: inherit;
+    border: 1px solid rgba(32,199,255,0.2);
+    box-shadow:
+      inset 0 0 0 8px rgba(0,0,0,0.2),
+      inset 0 0 36px rgba(32,199,255,0.08);
     pointer-events: none;
     z-index: 2;
   }
@@ -133,26 +487,71 @@
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 12px;
+    border-radius: inherit;
+    clip-path: inherit;
     background: linear-gradient(
       170deg,
-      rgba(196,154,60,0.03) 0%,
-      transparent 30%,
+      rgba(255,255,255,0.1) 0%,
+      rgba(196,154,60,0.03) 18%,
+      transparent 36%,
       transparent 70%,
       rgba(196,154,60,0.015) 100%
-    );
+    ),
+    radial-gradient(ellipse 80% 55% at 50% -10%, rgba(255,255,255,0.12), transparent 58%);
     pointer-events: none;
     z-index: 2;
   }
 
-  .viewport iframe {
+  .viewport canvas,
+  .viewport .window-video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     border: none;
     z-index: 1;
+    background: #000;
+    clip-path: inherit;
   }
+
+  .viewport canvas {
+    display: block;
+  }
+
+  .viewport .window-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(circle at 14% 20%, rgba(255,255,255,0.86) 0 1px, transparent 1.7px),
+      radial-gradient(circle at 72% 18%, rgba(255,255,255,0.54) 0 1px, transparent 1.6px),
+      radial-gradient(circle at 30% 62%, rgba(79,195,247,0.6) 0 1px, transparent 1.8px),
+      radial-gradient(circle at 84% 70%, rgba(196,154,60,0.55) 0 1px, transparent 1.7px),
+      radial-gradient(ellipse 70% 52% at 50% 25%, rgba(255,63,156,0.26), transparent 62%),
+      radial-gradient(ellipse 90% 60% at 50% 60%, rgba(32,199,255,0.14), transparent 64%),
+      linear-gradient(180deg, #03050b 0%, #07111f 58%, #03050b 100%);
+    background-size: 220px 160px, 260px 190px, 300px 210px, 240px 180px, 100% 100%, 100% 100%;
+    animation: star-drift 48s linear infinite;
+  }
+
+  .viewport .window-backdrop::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(115deg, transparent 0 45%, rgba(255,255,255,0.08) 47%, transparent 52%),
+      radial-gradient(ellipse 40% 18% at 50% 84%, rgba(196,154,60,0.12), transparent 70%);
+  }
+
+  @keyframes star-drift {
+    to { background-position: 180px 90px, -160px 120px, 120px -90px, -80px -120px, 0 0, 0 0; }
+  }
+
+  .viewport .window-video {
+    object-fit: cover;
+  }
+
+  .viewport .window-video[hidden] { display: none; }
 
   /* Viewport corner HUD overlays */
   .viewport .vp-corner {
@@ -180,66 +579,209 @@
   }
   .viewport .reticle svg { width: 40px; height: 40px; }
 
+  .viewport-status {
+    position: absolute;
+    left: clamp(76px, 8vw, 104px);
+    right: clamp(76px, 8vw, 104px);
+    bottom: 236px;
+    z-index: 4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+  }
+
+  .viewport-status .target-name,
+  .viewport-status .target-hint {
+    font-family: var(--mono);
+    font-size: 0.52rem;
+    letter-spacing: 0.08em;
+    color: rgba(200,208,216,0.55);
+    background: rgba(0,0,0,0.34);
+    border: 1px solid rgba(196,154,60,0.1);
+    border-radius: 4px;
+    padding: 4px 6px;
+    backdrop-filter: blur(8px);
+  }
+
+  .viewport-status .target-name {
+    color: rgba(196,154,60,0.72);
+  }
+
   /* ═══ SERVICE BUTTONS ═══ */
   .controls {
-    flex-shrink: 0;
+    position: absolute;
+    left: 29.5%;
+    right: 29.5%;
+    bottom: 46px;
+    z-index: 9;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 5px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 10px 12px 10px;
+    border: 1px solid rgba(108,124,158,0.16);
+    border-radius: 6px 6px 14px 14px;
+    background:
+      linear-gradient(90deg, rgba(32,199,255,0.12), transparent 18%, transparent 82%, rgba(255,63,156,0.08)),
+      linear-gradient(180deg, rgba(9,23,39,0.78) 0%, rgba(4,10,19,0.88) 45%, rgba(1,3,8,0.94) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      inset 0 -18px 28px rgba(0,0,0,0.42),
+      0 -8px 28px rgba(0,0,0,0.28);
+    clip-path: polygon(6% 0, 94% 0, 100% 12%, 96% 100%, 4% 100%, 0 12%);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .controls::before {
+    content: '';
+    position: absolute;
+    inset: 5px 8px;
+    border-radius: 6px 6px 12px 12px;
+    border: 1px solid rgba(196,154,60,0.08);
+    background:
+      linear-gradient(90deg, transparent 0 24%, rgba(196,154,60,0.08) 24.2% 24.5%, transparent 24.7% 49.5%, rgba(79,195,247,0.08) 49.7% 50%, transparent 50.2% 74.8%, rgba(196,154,60,0.08) 75% 75.3%, transparent 75.5%),
+      repeating-linear-gradient(90deg, transparent 0 34px, rgba(255,255,255,0.018) 34px 35px);
+    pointer-events: none;
+  }
+
+  .controls::after {
+    content: '';
+    position: absolute;
+    left: 11%;
+    right: 11%;
+    top: 0;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, rgba(79,195,247,0.42), rgba(196,154,60,0.35), transparent);
+    opacity: 0.55;
+    pointer-events: none;
   }
 
   .ctrl-btn {
+    --accent: var(--cyan);
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 8px;
-    background: linear-gradient(180deg, rgba(12,18,32,0.9) 0%, rgba(6,10,20,0.95) 100%);
-    border: 1px solid var(--panel-border);
-    border-radius: 4px;
+    gap: 8px;
+    min-height: 25px;
+    padding: 4px 6px 4px 7px;
+    background:
+      linear-gradient(180deg, rgba(45,56,82,0.92) 0 15%, rgba(13,19,34,0.96) 15% 100%);
+    border: 1px solid rgba(117,134,168,0.2);
+    border-bottom-color: rgba(0,0,0,0.65);
+    border-radius: 3px;
     text-decoration: none;
     color: var(--text);
     transition: all 0.15s ease;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      inset 0 -6px 10px rgba(0,0,0,0.38),
+      0 2px 0 rgba(0,0,0,0.55);
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 6px) 100%, 0 100%, 0 6px);
   }
 
   .ctrl-btn::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(196,154,60,0.15), transparent);
-    opacity: 0;
+    top: 4px;
+    right: 7px;
+    width: 28px;
+    height: 7px;
+    border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background:
+      linear-gradient(90deg, var(--accent) 0 18%, transparent 18% 28%, var(--accent) 28% 34%, transparent 34% 44%, rgba(255,255,255,0.18) 44% 52%, transparent 52%),
+      rgba(0,0,0,0.38);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--accent), transparent 65%);
+    opacity: 0.65;
     transition: opacity 0.3s;
+  }
+
+  .ctrl-btn::after {
+    content: '';
+    position: absolute;
+    left: 34px;
+    right: 8px;
+    bottom: 5px;
+    height: 3px;
+    border-radius: 999px;
+    background:
+      linear-gradient(90deg, var(--accent) 0 16%, transparent 16% 24%, rgba(255,255,255,0.22) 24% 26%, transparent 26% 38%, var(--accent) 38% 47%, transparent 47%);
+    opacity: 0.34;
   }
   .ctrl-btn:hover::before { opacity: 1; }
 
   .ctrl-btn:hover {
-    border-color: rgba(196,154,60,0.3);
-    background: linear-gradient(180deg, rgba(16,24,40,0.9) 0%, rgba(8,14,28,0.95) 100%);
-    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--accent), transparent 45%);
+    background:
+      linear-gradient(180deg, rgba(55,68,96,0.95) 0 15%, rgba(16,24,42,0.98) 15% 100%);
+    transform: translateY(-2px);
   }
   .ctrl-btn:active {
-    transform: translateY(1px) scale(0.98);
+    transform: translateY(1px);
     transition-duration: 0.05s;
+    box-shadow:
+      inset 0 2px 10px rgba(0,0,0,0.55),
+      0 0 0 rgba(0,0,0,0);
+  }
+
+  .ctrl-btn.active {
+    --accent: #ff6b35;
+    border-color: rgba(255,107,53,0.7);
+    background:
+      linear-gradient(180deg, rgba(82,58,45,0.95) 0 15%, rgba(25,19,25,0.98) 15% 100%);
+    box-shadow:
+      inset 0 0 18px rgba(255,107,53,0.08),
+      0 0 18px rgba(255,107,53,0.12),
+      0 2px 0 rgba(0,0,0,0.55);
+  }
+
+  .ctrl-btn[data-view="window"] {
+    --accent: #38d5cc;
+  }
+
+  .ctrl-btn:nth-child(3n) { --accent: #c49a3c; }
+  .ctrl-btn:nth-child(4n) { --accent: #4ade80; }
+  .ctrl-btn:nth-child(5n) { --accent: #60a5fa; }
+  .ctrl-btn:nth-child(6n) { --accent: #f472b6; }
+
+  .ctrl-btn[data-view="window"].active {
+    --accent: #38d5cc;
+    border-color: rgba(56,213,204,0.7);
+    background:
+      linear-gradient(180deg, rgba(37,76,85,0.94) 0 15%, rgba(12,24,35,0.98) 15% 100%);
+    box-shadow:
+      inset 0 0 18px rgba(56,213,204,0.08),
+      0 0 18px rgba(56,213,204,0.12),
+      0 2px 0 rgba(0,0,0,0.55);
   }
 
   .ctrl-btn .led {
-    width: 5px; height: 5px;
-    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
     flex-shrink: 0;
-    margin-right: 2px;
+    margin-right: 0;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: radial-gradient(circle at 45% 42%, var(--accent) 0 28%, rgba(0,0,0,0.35) 30% 100%);
+    box-shadow:
+      inset 0 0 8px rgba(0,0,0,0.65),
+      0 0 8px color-mix(in srgb, var(--accent), transparent 55%);
   }
-  .led-online   { background: var(--green); box-shadow: 0 0 5px rgba(74,222,128,0.4); }
-  .led-tunnel   { background: #60a5fa; box-shadow: 0 0 5px rgba(96,165,250,0.3); }
-  .led-external { background: var(--gold); box-shadow: 0 0 5px var(--gold-glow); }
-  .led-nas      { background: #a78bfa; box-shadow: 0 0 5px rgba(167,139,250,0.3); }
-  .led-cloud    { background: #f472b6; box-shadow: 0 0 5px rgba(244,114,182,0.3); }
 
   .ctrl-btn .icon {
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     flex-shrink: 0;
-    opacity: 0.7;
+    opacity: 0.78;
+    width: 13px;
+    text-align: center;
+    filter: grayscale(0.2);
   }
   .ctrl-btn:hover .icon { opacity: 1; }
 
@@ -247,22 +789,27 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
+    position: relative;
+    z-index: 1;
   }
   .ctrl-btn .info .name {
     font-family: var(--mono);
-    font-size: 0.62rem;
+    font-size: 0.47rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
     line-height: 1.2;
+    color: rgba(232,238,244,0.86);
+    text-shadow: 0 0 8px rgba(255,255,255,0.08);
   }
   .ctrl-btn .info .desc {
     font-family: var(--mono);
-    font-size: 0.48rem;
-    color: var(--text-dim);
+    font-size: 0.34rem;
+    color: rgba(132,154,174,0.72);
     line-height: 1.1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 100%;
   }
 
   /* ═══ BOTTOM STATUS ═══ */
@@ -305,15 +852,58 @@
   /* ═══ RESPONSIVE ═══ */
   @media (max-width: 700px) {
     body { padding: 6px 8px; gap: 5px; }
-    .controls { grid-template-columns: repeat(2, 1fr); gap: 4px; }
-    .ctrl-btn { padding: 5px 6px; }
+    .cockpit-shell {
+      grid-template-columns: 1fr;
+      padding: 7px 7px 122px;
+      gap: 0;
+    }
+    .cockpit-shell::before { inset: 6px 4%; border-width: 5px; }
+    .cockpit-shell::after { height: 34%; clip-path: polygon(0 24%, 8% 5%, 92% 5%, 100% 24%, 100% 100%, 0 100%); }
+    .windshield-strut.left,
+    .windshield-strut.right { display: none; }
+    .windshield-strut.top {
+      display: block;
+      left: 25%;
+      right: 25%;
+      top: 24px;
+      height: 7px;
+      opacity: 0.45;
+    }
+    .console-deck {
+      bottom: 44px;
+      height: 124px;
+      clip-path: polygon(0 28%, 8% 0, 92% 0, 100% 28%, 98% 100%, 2% 100%);
+    }
+    .console-deck::before,
+    .console-deck::after,
+    .center-console,
+    .gauge,
+    .dashboard-screen,
+    .dash-visor { display: none; }
+    .side-console { display: none; }
+    .controls {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+      left: 4.2%;
+      right: 4.2%;
+      bottom: 52px;
+      padding: 8px 9px 10px;
+      border-radius: 6px 6px 12px 12px;
+      clip-path: polygon(2% 0, 98% 0, 100% 14%, 98% 100%, 2% 100%, 0 14%);
+    }
+    .ctrl-btn { min-height: 32px; padding: 5px 6px; gap: 5px; }
+    .ctrl-btn::before { width: 30px; right: 5px; top: 3px; }
+    .ctrl-btn::after { left: 25px; right: 5px; bottom: 4px; }
     .ctrl-btn .icon { font-size: 0.7rem; }
     .ctrl-btn .info .name { font-size: 0.55rem; }
     .ctrl-btn .info .desc { font-size: 0.42rem; }
-    .ctrl-btn .led { width: 4px; height: 4px; }
-    .viewport { border-radius: 8px; min-height: 120px; }
+    .ctrl-btn .led { width: 13px; height: 13px; }
+    .viewport { border-radius: 18% 18% 8px 8px / 7% 7% 8px 8px; min-height: 120px; }
     .viewport .vp-corner { display: none; }
     .viewport .reticle { display: none; }
+    .viewport-status { left: 12px; right: 12px; bottom: 132px; }
+    .viewport-status .target-hint { display: none; }
+    .viewport-status .target-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .mode-links a { font-size: 0.45rem; padding: 3px 6px; }
   }
 
@@ -339,33 +929,72 @@
   </div>
 </div>
 
-<!-- VIEWPORT (spaceship window) -->
-<div class="viewport">
-  <iframe
-    src="https://www.youtube.com/embed/86YLFOog4GM?autoplay=1&loop=1&playlist=86YLFOog4GM&controls=0&showinfo=0&rel=0&mute=1&modestbranding=1"
-    allow="autoplay; encrypted-media"
-    loading="lazy"
-  ></iframe>
-  <div class="vp-corner vp-tl">SYS·MON · FRAME 001</div>
-  <div class="vp-corner vp-tr">VIEWPORT · ACTIVE</div>
-  <div class="vp-corner vp-bl">ALT 408KM · VEL 7.66KM/S</div>
-  <div class="vp-corner vp-br">SIG · NOMINAL</div>
-  <div class="reticle">
-    <svg viewBox="0 0 40 40">
-      <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(196,154,60,0.3)" stroke-width="0.5">
-        <animate attributeName="r" values="18;20;18" dur="3s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
-      </circle>
-      <line x1="20" y1="2"  x2="20" y2="10" stroke="rgba(196,154,60,0.2)" stroke-width="0.5"/>
-      <line x1="20" y1="30" x2="20" y2="38" stroke="rgba(196,154,60,0.2)" stroke-width="0.5"/>
-      <line x1="2"  y1="20" x2="10" y2="20" stroke="rgba(196,154,60,0.2)" stroke-width="0.5"/>
-      <line x1="30" y1="20" x2="38" y2="20" stroke="rgba(196,154,60,0.2)" stroke-width="0.5"/>
-    </svg>
+<!-- COCKPIT VIEW -->
+<main class="cockpit-shell" aria-label="Spaceship cockpit">
+  <div class="cockpit-art" aria-hidden="true">
+    <span class="windshield-strut left"></span>
+    <span class="windshield-strut right"></span>
+    <span class="windshield-strut top"></span>
+    <span class="console-deck"></span>
+    <span class="center-console"></span>
+    <span class="gauge left"></span>
+    <span class="gauge right"></span>
+    <span class="dashboard-screen left"></span>
+    <span class="dashboard-screen mid"></span>
+    <span class="dashboard-screen right"></span>
   </div>
-</div>
+  <aside class="side-console left" aria-hidden="true">
+    <div class="rail-label">PORT CONSOLE</div>
+    <div class="switch-stack">
+      <span class="micro-switch"></span>
+      <span class="micro-switch"></span>
+      <span class="micro-switch"></span>
+      <span class="micro-switch"></span>
+      <span class="micro-switch"></span>
+    </div>
+  </aside>
 
-<!-- SERVICE BUTTONS -->
-<div class="controls" id="controls"></div>
+  <div class="viewport-wrap">
+    <div class="viewport">
+      <div class="window-backdrop" aria-hidden="true"></div>
+      <canvas id="space-feed" aria-label="Generated cockpit space video"></canvas>
+      <div class="vp-corner vp-tl">SYS·MON · FRAME 001</div>
+      <div class="vp-corner vp-tr">VIEWPORT · ACTIVE</div>
+      <div class="vp-corner vp-bl">ALT 408KM · VEL 7.66KM/S</div>
+      <div class="vp-corner vp-br">SIG · NOMINAL</div>
+      <div class="reticle">
+        <svg viewBox="0 0 40 40">
+          <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(196,154,60,0.3)" stroke-width="0.5">
+            <animate attributeName="r" values="18;20;18" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <line x1="20" y1="2"  x2="20" y2="10" stroke="rgba(196,154,60,0.2)" stroke-width="0.5"/>
+          <line x1="20" y1="30" x2="20" y2="38" stroke="rgba(196,154,60,0.2)" stroke-width="0.5"/>
+          <line x1="2"  y1="20" x2="10" y2="20" stroke="rgba(196,154,60,0.2)" stroke-width="0.5"/>
+          <line x1="30" y1="20" x2="38" y2="20" stroke="rgba(196,154,60,0.2)" stroke-width="0.5"/>
+        </svg>
+      </div>
+  <div class="viewport-status">
+        <span class="target-name" id="target-name">WINDOW · LOCAL SPACE FEED</span>
+        <span class="target-hint" id="target-hint">GENERATED LOOP · COCKPIT GLASS FIT</span>
+  </div>
+    </div>
+  </div>
+
+  <aside class="side-console right" aria-hidden="true">
+    <div class="switch-stack">
+      <span class="micro-switch"></span>
+      <span class="micro-switch"></span>
+      <span class="micro-switch"></span>
+      <span class="micro-switch"></span>
+      <span class="micro-switch"></span>
+    </div>
+    <div class="rail-label">STARBOARD CONSOLE</div>
+  </aside>
+
+  <!-- SERVICE BUTTONS -->
+  <div class="controls" id="controls"></div>
+</main>
 
 <!-- BOTTOM BAR -->
 <div class="bottom-bar">
@@ -392,20 +1021,15 @@
 </div>
 
 <script>
-const services = [
+const cockpitButtons = [
+  { name: 'WINDOW',     url: '',                                  icon: '◉', desc: 'Favorite Video View',    led: 'led-tunnel', view: 'window' },
   { name: 'HERMES',     url: 'https://hermes.yannn8n.work',    icon: '⚡', desc: 'Agent Platform',       led: 'led-online' },
   { name: 'OPENCODE',   url: 'https://opencode.yannn8n.work',  icon: '⌨️', desc: 'Coding Agent',         led: 'led-online' },
   { name: 'OMNION',     url: 'https://omnion.yannn8n.work',    icon: '🔄', desc: 'Web Interface',        led: 'led-online' },
-  { name: 'OLLAMA',     url: 'https://ollama.yannn8n.work',    icon: '🧠', desc: 'Local AI Models',      led: 'led-tunnel' },
   { name: 'N8N',        url: 'https://n8n.yannn8n.work',       icon: '🔗', desc: 'Workflow Automation',  led: 'led-tunnel' },
-  { name: 'VAULTWARDEN',url: 'https://vault.yannn8n.work',     icon: '🔑', desc: 'Password Manager',     led: 'led-tunnel' },
   { name: 'LOG',        url: 'https://log.yannn8n.work',       icon: '📋', desc: '업무 관리 시스템',       led: 'led-external' },
   { name: 'BLOG',       url: 'https://blog.yannn8n.work',      icon: '📝', desc: 'Tech & Journal',       led: 'led-external' },
   { name: 'ODNMON',     url: 'https://odnmon.netlify.app',     icon: '📡', desc: '관측기기 모니터링',       led: 'led-external' },
-  { name: 'NAS',        url: 'http://ymseo123132.asuscomm.com',icon: '🗄️', desc: 'Network Storage',       led: 'led-nas' },
-  { name: 'GITHUB',     url: 'https://github.com/ymseo741',    icon: '💻', desc: 'Code Repository',       led: 'led-external' },
-  { name: 'CLOUDFLARE', url: 'https://dash.cloudflare.com',    icon: '🌐', desc: 'Tunnel & DNS',         led: 'led-cloud' },
-  { name: 'ORACLE VPC', url: 'https://cloud.oracle.com',       icon: '☁️', desc: 'Cloud Server Console',  led: 'led-cloud' },
   { name: 'AGENTMAIL',  url: 'https://agentmail.to',           icon: '✉️', desc: 'AI Agent Mailbox',      led: 'led-external' },
   { name: 'FLOWSTATES', url: 'https://flowstates.netlify.app', icon: '🎵', desc: '인터렉티브 콘텐츠 뷰어',    led: 'led-external' },
   { name: 'TRIPVERSE',  url: 'https://tripversemate.netlify.app',icon:'✈️', desc: '인터렉티브 트립 뷰어',     led: 'led-external' },
@@ -413,8 +1037,8 @@ const services = [
 
 function renderButtons() {
   const grid = document.getElementById('controls');
-  grid.innerHTML = services.map(s => `
-    <a href="${s.url}" class="ctrl-btn" target="_blank" rel="noopener">
+  grid.innerHTML = cockpitButtons.map(s => `
+    <a class="ctrl-btn" href="${s.url || '#'}" ${s.view === 'window' ? '' : 'target="_blank" rel="noopener noreferrer"'} data-url="${s.url}" data-name="${s.name}" data-view="${s.view || 'service'}">
       <span class="led ${s.led}"></span>
       <span class="icon">${s.icon}</span>
       <span class="info">
@@ -423,6 +1047,44 @@ function renderButtons() {
       </span>
     </a>
   `).join('');
+  grid.addEventListener('click', handleControlClick);
+  setActiveButton('WINDOW');
+}
+
+function setActiveButton(name) {
+  document.querySelectorAll('.ctrl-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.name === name);
+  });
+}
+
+function showWindowVideo() {
+  document.getElementById('target-name').textContent = 'WINDOW · LOCAL SPACE FEED';
+  document.getElementById('target-hint').textContent = 'GENERATED LOOP · COCKPIT GLASS FIT';
+  setActiveButton('WINDOW');
+}
+
+function markServiceOpened(service) {
+  document.getElementById('target-name').textContent = `OPENED · ${service.name}`;
+  document.getElementById('target-hint').textContent = 'LOCAL SPACE FEED CONTINUES IN COCKPIT WINDOW';
+  setActiveButton(service.name);
+}
+
+function handleControlClick(event) {
+  const btn = event.target.closest('.ctrl-btn');
+  if (!btn) return;
+  const service = {
+    name: btn.dataset.name,
+    url: btn.dataset.url,
+    view: btn.dataset.view
+  };
+
+  if (service.view === 'window') {
+    event.preventDefault();
+    showWindowVideo();
+    return;
+  }
+
+  markServiceOpened(service);
 }
 
 function updateTime() {
@@ -433,7 +1095,328 @@ function updateTime() {
   el.textContent = now.toLocaleString('ko-KR', opts) + ' KST';
 }
 
+function initSpaceFeed() {
+  const canvas = document.getElementById('space-feed');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d', { alpha: false });
+  const viewport = canvas.parentElement;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lowPowerViewport = Math.min(window.innerWidth, window.innerHeight) < 520;
+  const DPR_LIMIT = lowPowerViewport ? 1.25 : 1.5;
+  const FRAME_MS = reducedMotion ? 1000 / 18 : lowPowerViewport ? 1000 / 24 : 1000 / 30;
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  let stars = [];
+  let dust = [];
+  let streaks = [];
+  let sigils = [];
+  let lastDraw = 0;
+
+  function resize() {
+    const rect = viewport.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, DPR_LIMIT);
+    width = Math.max(1, Math.floor(rect.width));
+    height = Math.max(1, Math.floor(rect.height));
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    seed();
+  }
+
+  function seed() {
+    const starCount = Math.round(Math.min(lowPowerViewport ? 220 : 360, Math.max(120, (width * height) / (lowPowerViewport ? 3600 : 3200))));
+    stars = Array.from({ length: starCount }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      z: Math.random() * 0.85 + 0.15,
+      r: Math.random() * 1.35 + 0.25,
+      phase: Math.random() * Math.PI * 2,
+      hue: Math.random() < 0.18 ? 195 : Math.random() < 0.26 ? 318 : 220,
+    }));
+    dust = Array.from({ length: lowPowerViewport ? 18 : 26 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      rx: Math.random() * width * 0.18 + width * 0.08,
+      ry: Math.random() * height * 0.12 + height * 0.05,
+      hue: Math.random() < 0.58 ? 320 : 195,
+      alpha: Math.random() * 0.06 + 0.025,
+      speed: Math.random() * 0.18 + 0.05,
+    }));
+    streaks = [];
+    sigils = Array.from({ length: lowPowerViewport ? 2 : 3 }, (_, i) => ({
+      x: width * (0.28 + i * 0.22) + (Math.random() - 0.5) * width * 0.08,
+      y: height * (0.2 + Math.random() * 0.34),
+      r: Math.min(width, height) * (0.055 + Math.random() * 0.035),
+      spin: (Math.random() > 0.5 ? 1 : -1) * (0.12 + Math.random() * 0.18),
+      phase: Math.random() * Math.PI * 2,
+      hue: Math.random() > 0.45 ? 35 : 190,
+    }));
+  }
+
+  function maybeSpawnStreak(t) {
+    if (streaks.length > (lowPowerViewport ? 3 : 5) || Math.sin(t * 1.8) < 0.99) return;
+    const fromLeft = Math.random() > 0.5;
+    streaks.push({
+      x: fromLeft ? -width * 0.1 : width * 1.1,
+      y: Math.random() * height * 0.52 + height * 0.04,
+      vx: (fromLeft ? 1 : -1) * (width * (0.34 + Math.random() * 0.2)),
+      vy: height * (0.05 + Math.random() * 0.08),
+      life: 0,
+      max: 0.8 + Math.random() * 0.45,
+      hue: Math.random() > 0.35 ? 198 : 326,
+    });
+  }
+
+  function drawNebula(t) {
+    const base = ctx.createLinearGradient(0, 0, 0, height);
+    base.addColorStop(0, '#050716');
+    base.addColorStop(0.42, '#06192a');
+    base.addColorStop(0.72, '#08111c');
+    base.addColorStop(1, '#02040a');
+    ctx.fillStyle = base;
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    for (const cloud of dust) {
+      const x = (cloud.x + Math.sin(t * cloud.speed + cloud.rx) * width * 0.05 + width) % width;
+      const y = cloud.y + Math.cos(t * cloud.speed * 0.8 + cloud.ry) * height * 0.05;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, Math.max(cloud.rx, cloud.ry));
+      g.addColorStop(0, `hsla(${cloud.hue}, 94%, 62%, ${cloud.alpha})`);
+      g.addColorStop(0.46, `hsla(${cloud.hue}, 90%, 50%, ${cloud.alpha * 0.35})`);
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.ellipse(x, y, cloud.rx, cloud.ry, Math.sin(t * 0.08) * 0.35, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+
+    const horizon = height * (0.57 + Math.sin(t * 0.12) * 0.025);
+    const glow = ctx.createRadialGradient(width * 0.5, horizon, 0, width * 0.5, horizon, width * 0.52);
+    glow.addColorStop(0, 'rgba(32,199,255,0.13)');
+    glow.addColorStop(0.42, 'rgba(255,63,156,0.08)');
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, width, height);
+  }
+
+  function drawStars(t, dt) {
+    for (const s of stars) {
+      s.x -= (8 + s.z * 28) * dt;
+      s.y += Math.sin(t * 0.3 + s.phase) * s.z * 0.018;
+      if (s.x < -6) {
+        s.x = width + Math.random() * width * 0.08;
+        s.y = Math.random() * height;
+      }
+      const twinkle = Math.sin(t * (1.2 + s.z * 1.4) + s.phase) * 0.32 + 0.68;
+      ctx.fillStyle = `hsla(${s.hue}, 90%, ${72 + s.z * 18}%, ${twinkle * (0.25 + s.z * 0.72)})`;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r * (0.7 + s.z), 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawPlanetAndGrid(t) {
+    const cx = width * (0.52 + Math.sin(t * 0.08) * 0.04);
+    const cy = height * 0.72;
+    const radius = Math.max(width, height) * 0.34;
+    const planet = ctx.createRadialGradient(cx - radius * 0.2, cy - radius * 0.45, radius * 0.08, cx, cy, radius);
+    planet.addColorStop(0, 'rgba(255,112,190,0.34)');
+    planet.addColorStop(0.5, 'rgba(31,214,255,0.18)');
+    planet.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = planet;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, Math.PI, Math.PI * 2);
+    ctx.fill();
+
+    ctx.save();
+    ctx.globalAlpha = 0.22;
+    ctx.strokeStyle = 'rgba(255,63,156,0.55)';
+    ctx.lineWidth = 1;
+    for (let i = -4; i <= 4; i++) {
+      const y = cy - radius * (0.82 - i * 0.13);
+      ctx.beginPath();
+      ctx.ellipse(cx, y, radius * (1 - Math.abs(i) * 0.06), radius * 0.08, 0, Math.PI, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.strokeStyle = 'rgba(32,199,255,0.45)';
+    for (let i = -5; i <= 5; i++) {
+      ctx.beginPath();
+      ctx.moveTo(cx + i * radius * 0.14, cy);
+      ctx.quadraticCurveTo(cx + i * radius * 0.08, cy - radius * 0.45, cx + i * radius * 0.04, cy - radius * 0.92);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawSigil(cx, cy, radius, rotation, alpha, hue) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rotation);
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = `hsla(${hue}, 100%, 64%, 0.88)`;
+    ctx.fillStyle = `hsla(${hue}, 100%, 68%, 0.7)`;
+    ctx.lineWidth = Math.max(1, radius * 0.018);
+    ctx.shadowColor = `hsla(${hue}, 100%, 58%, 0.8)`;
+    ctx.shadowBlur = radius * 0.18;
+
+    for (let i = 0; i < 3; i++) {
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * (0.55 + i * 0.18), 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    const sides = 6;
+    for (let layer = 0; layer < 2; layer++) {
+      const rr = radius * (0.42 + layer * 0.24);
+      ctx.beginPath();
+      for (let i = 0; i <= sides; i++) {
+        const a = (Math.PI * 2 * i) / sides + layer * Math.PI / sides;
+        const x = Math.cos(a) * rr;
+        const y = Math.sin(a) * rr;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    for (let i = 0; i < 12; i++) {
+      const a = (Math.PI * 2 * i) / 12;
+      const inner = radius * 0.68;
+      const outer = radius * 0.92;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a) * inner, Math.sin(a) * inner);
+      ctx.lineTo(Math.cos(a) * outer, Math.sin(a) * outer);
+      ctx.stroke();
+
+      if (i % 2 === 0) {
+        ctx.beginPath();
+        ctx.arc(Math.cos(a) * radius * 0.78, Math.sin(a) * radius * 0.78, radius * 0.025, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    ctx.globalAlpha = alpha * 0.34;
+    for (let i = 0; i < 5; i++) {
+      const a = rotation * 1.8 + i * Math.PI * 0.4;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, radius * (0.9 + i * 0.05), radius * (0.18 + i * 0.025), a, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  function drawArcaneOverlays(t) {
+    if (reducedMotion) return;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (const s of sigils) {
+      const pulse = Math.sin(t * 1.4 + s.phase) * 0.5 + 0.5;
+      const alpha = 0.08 + pulse * 0.2;
+      const driftX = Math.sin(t * 0.17 + s.phase) * width * 0.025;
+      const driftY = Math.cos(t * 0.13 + s.phase) * height * 0.02;
+      drawSigil(
+        s.x + driftX,
+        s.y + driftY,
+        s.r * (0.86 + pulse * 0.18),
+        t * s.spin + s.phase,
+        alpha,
+        s.hue
+      );
+    }
+
+    const portalX = width * (0.68 + Math.sin(t * 0.09) * 0.06);
+    const portalY = height * (0.28 + Math.cos(t * 0.11) * 0.05);
+    const portalR = Math.min(width, height) * 0.16;
+    const portalAlpha = 0.09 + (Math.sin(t * 0.8) * 0.5 + 0.5) * 0.08;
+    ctx.translate(portalX, portalY);
+    ctx.rotate(t * 0.08);
+    for (let i = 0; i < (lowPowerViewport ? 4 : 6); i++) {
+      const r = portalR * (0.45 + i * 0.08);
+      ctx.strokeStyle = i % 2 ? `rgba(255,176,68,${portalAlpha})` : `rgba(32,199,255,${portalAlpha * 0.72})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.setLineDash([r * 0.16, r * 0.05, r * 0.04, r * 0.08]);
+      ctx.arc(0, 0, r, t * (0.12 + i * 0.02), Math.PI * 2 + t * (0.12 + i * 0.02));
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.restore();
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  function drawStreaks(t, dt) {
+    maybeSpawnStreak(t);
+    for (let i = streaks.length - 1; i >= 0; i--) {
+      const s = streaks[i];
+      s.life += dt;
+      s.x += s.vx * dt;
+      s.y += s.vy * dt;
+      const alpha = Math.max(0, 1 - s.life / s.max);
+      const len = Math.min(width * 0.16, 150) * alpha;
+      const grad = ctx.createLinearGradient(s.x - Math.sign(s.vx) * len, s.y - len * 0.25, s.x, s.y);
+      grad.addColorStop(0, `hsla(${s.hue}, 100%, 60%, 0)`);
+      grad.addColorStop(1, `hsla(${s.hue}, 100%, 72%, ${0.8 * alpha})`);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(s.x - Math.sign(s.vx) * len, s.y - len * 0.25);
+      ctx.lineTo(s.x, s.y);
+      ctx.stroke();
+      if (s.life > s.max) streaks.splice(i, 1);
+    }
+  }
+
+  function drawScan(t) {
+    ctx.save();
+    ctx.globalAlpha = 0.22;
+    ctx.fillStyle = 'rgba(0,0,0,0.18)';
+    for (let y = (t * 14) % 6; y < height; y += 6) {
+      ctx.fillRect(0, y, width, 1);
+    }
+    ctx.restore();
+
+    const sweepX = (Math.sin(t * 0.22) * 0.5 + 0.5) * width;
+    const sweep = ctx.createLinearGradient(sweepX - width * 0.08, 0, sweepX + width * 0.08, 0);
+    sweep.addColorStop(0, 'rgba(32,199,255,0)');
+    sweep.addColorStop(0.5, 'rgba(32,199,255,0.055)');
+    sweep.addColorStop(1, 'rgba(32,199,255,0)');
+    ctx.fillStyle = sweep;
+    ctx.fillRect(sweepX - width * 0.08, 0, width * 0.16, height);
+  }
+
+  let last = performance.now();
+  function frame(now) {
+    if (now - lastDraw < FRAME_MS) {
+      requestAnimationFrame(frame);
+      return;
+    }
+    const t = now * 0.001;
+    const dt = Math.min(0.04, (now - last) / 1000);
+    last = now;
+    lastDraw = now;
+    drawNebula(t);
+    drawPlanetAndGrid(t);
+    drawArcaneOverlays(t);
+    drawStars(t, dt);
+    drawStreaks(t, dt);
+    drawScan(t);
+    requestAnimationFrame(frame);
+  }
+
+  const ro = new ResizeObserver(resize);
+  ro.observe(viewport);
+  resize();
+  requestAnimationFrame(frame);
+}
+
 renderButtons();
+initSpaceFeed();
 updateTime();
 setInterval(updateTime, 1000);
 </script>
