@@ -360,6 +360,245 @@
     .center-brand h1 { font-size: 1.6rem; }
     .center-brand .subtitle { font-size: 0.65rem; letter-spacing: 0.2em; }
   }
+
+  /* ═══════════════════════════════════════════════════════
+     COCKPIT MODE
+     ═══════════════════════════════════════════════════════ */
+
+  /* ── Mode toggle ── */
+  .mode-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    background: rgba(17,24,39,0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(196,154,60,0.2);
+    border-radius: 8px;
+    padding: 0.35rem;
+    display: flex;
+    gap: 0.2rem;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+  .mode-toggle:hover { border-color: rgba(196,154,60,0.5); }
+
+  .mode-btn {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.35rem 0.7rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    transition: all 0.3s;
+  }
+  .mode-btn.active {
+    background: rgba(196,154,60,0.15);
+    color: var(--gold);
+  }
+  .mode-btn:not(.active):hover { color: var(--text-dim); }
+
+  /* ── HUD overlay (cockpit decorations) ── */
+  #hud-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s;
+  }
+
+  .cockpit-mode #hud-overlay { opacity: 1; }
+
+  /* Corner brackets */
+  #hud-overlay .corner {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-color: rgba(196,154,60,0.2);
+    border-style: solid;
+  }
+  #hud-overlay .corner-tl { top: 12px; left: 12px; border-width: 2px 0 0 2px; }
+  #hud-overlay .corner-tr { top: 12px; right: 12px; border-width: 2px 2px 0 0; }
+  #hud-overlay .corner-bl { bottom: 12px; left: 12px; border-width: 0 0 2px 2px; }
+  #hud-overlay .corner-br { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
+
+  /* Top HUD bar */
+  #hud-overlay .hud-top {
+    position: absolute;
+    top: 16px;
+    left: 60px;
+    right: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(196,154,60,0.15), transparent);
+  }
+
+  /* Scanlines overlay */
+  #hud-overlay .scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+  }
+
+  /* ── Cockpit mode body ── */
+  .cockpit-mode {
+    background: #050810;
+  }
+
+  .cockpit-mode #stars-canvas { opacity: 0.15; }
+  .cockpit-mode .aurora { opacity: 0; }
+
+  .cockpit-mode #topology-svg { opacity: 0.1; }
+
+  .cockpit-mode .center-brand h1 {
+    font-size: 2rem;
+    letter-spacing: 0.2em;
+    background: none;
+    -webkit-text-fill-color: initial;
+    background-clip: initial;
+    color: var(--gold);
+    font-family: var(--mono);
+    font-weight: 400;
+    animation: none;
+    text-shadow: 0 0 20px rgba(196,154,60,0.3);
+  }
+  .cockpit-mode .center-brand h1::before {
+    content: 'SYS:// ';
+    font-size: 0.6em;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .cockpit-mode .center-brand .glow { display: none; }
+
+  .cockpit-mode .center-brand .subtitle {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    opacity: 0.4;
+  }
+
+  .cockpit-mode .container {
+    justify-content: flex-start;
+    padding-top: 4rem;
+  }
+
+  .cockpit-mode .center-brand { margin-bottom: 1rem; }
+
+  /* ── Cockpit service cards ── */
+  .cockpit-mode .services-grid { max-width: 900px; }
+
+  .cockpit-mode .service-card {
+    background: rgba(5,8,16,0.6);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(196,154,60,0.08);
+    border-radius: 4px;
+    padding: 0.7rem 0.65rem;
+    font-family: var(--mono);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cockpit-mode .service-card::before {
+    background: linear-gradient(135deg, transparent 30%, rgba(196,154,60,0.03) 100%);
+  }
+
+  .cockpit-mode .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(196,154,60,0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .cockpit-mode .service-card:hover::after { opacity: 1; }
+
+  .cockpit-mode .service-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(196,154,60,0.3);
+    box-shadow: 0 4px 20px rgba(196,154,60,0.08), inset 0 0 20px rgba(196,154,60,0.02);
+  }
+  .cockpit-mode .service-card:active { transform: scale(0.97); }
+
+  .cockpit-mode .service-card .icon {
+    font-size: 0.8rem;
+    margin-bottom: 0.2rem;
+    opacity: 0.5;
+  }
+  .cockpit-mode .service-card:hover .icon { opacity: 1; transform: none; }
+
+  .cockpit-mode .service-card .name {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    gap: 0.4rem;
+  }
+
+  .cockpit-mode .service-card .name::before {
+    content: '▶ ';
+    font-size: 0.5rem;
+    color: var(--text-muted);
+  }
+
+  .cockpit-mode .service-card .status-dot {
+    width: 4px;
+    height: 4px;
+    margin-left: auto;
+  }
+
+  .cockpit-mode .service-card .desc {
+    font-size: 0.58rem;
+    font-family: var(--mono);
+    color: var(--text-muted);
+    margin-top: 0.05rem;
+  }
+  .cockpit-mode .service-card:hover .desc { color: var(--text-dim); }
+
+  .cockpit-mode .service-card .tag { display: none; }
+
+  .cockpit-mode .footer {
+    margin-top: 0.8rem;
+    opacity: 0.4;
+    font-size: 0.6rem;
+  }
+
+  /* ── Radar widget ── */
+  #hud-radar {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    z-index: 0;
+    width: 80px;
+    height: 80px;
+    opacity: 0;
+    transition: opacity 0.8s;
+    pointer-events: none;
+  }
+  .cockpit-mode #hud-radar { opacity: 0.4; }
+  #hud-radar svg { width: 100%; height: 100%; }
+
+  /* ── Responsive: cockpit ── */
+  @media (max-width: 650px) {
+    .cockpit-mode .center-brand h1 { font-size: 1.4rem; }
+    .cockpit-mode .container { padding-top: 3rem; }
+    .cockpit-mode .service-card { padding: 0.6rem 0.5rem; }
+    .cockpit-mode .service-card .name { font-size: 0.65rem; }
+    .cockpit-mode .service-card .icon { display: none; }
+    .cockpit-mode .service-card .name::before { content: ''; }
+    .mode-btn { font-size: 0.55rem; padding: 0.25rem 0.5rem; }
+    #hud-radar { display: none; }
+  }
+
 </style>
 </head>
 <body>
@@ -367,6 +606,41 @@
 <canvas id="stars-canvas"></canvas>
 <div id="mouse-glow"></div>
 <div class="aurora"></div>
+
+<!-- ── Mode toggle ── -->
+<div class="mode-toggle" id="mode-toggle">
+  <button class="mode-btn active" data-mode="dashboard">◈ DASH</button>
+  <button class="mode-btn" data-mode="cockpit">⟐ COCKPIT</button>
+</div>
+
+<!-- ── HUD overlay (cockpit decorations) ── -->
+<div id="hud-overlay">
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+  <div class="hud-top"></div>
+  <div class="scanlines"></div>
+</div>
+
+<!-- ── Radar widget ── -->
+<div id="hud-radar">
+  <svg viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(196,154,60,0.15)" stroke-width="0.5"/>
+    <circle cx="50" cy="50" r="30" fill="none" stroke="rgba(196,154,60,0.1)" stroke-width="0.4"/>
+    <circle cx="50" cy="50" r="15" fill="none" stroke="rgba(196,154,60,0.08)" stroke-width="0.3"/>
+    <line x1="5" y1="50" x2="95" y2="50" stroke="rgba(196,154,60,0.06)" stroke-width="0.3"/>
+    <line x1="50" y1="5" x2="50" y2="95" stroke="rgba(196,154,60,0.06)" stroke-width="0.3"/>
+    <line id="radar-sweep" x1="50" y1="50" x2="95" y2="50" stroke="rgba(196,154,60,0.3)" stroke-width="1">
+      <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="4s" repeatCount="indefinite"/>
+    </line>
+    <!-- Blips -->
+    <circle cx="65" cy="35" r="2" fill="rgba(196,154,60,0.4)"><animate attributeName="opacity" values="0.4;0.1;0.4" dur="2s" repeatCount="indefinite"/></circle>
+    <circle cx="30" cy="60" r="1.5" fill="rgba(196,154,60,0.3)"><animate attributeName="opacity" values="0.3;0.05;0.3" dur="3s" repeatCount="indefinite"/></circle>
+    <circle cx="45" cy="25" r="1.8" fill="rgba(196,154,60,0.35)"><animate attributeName="opacity" values="0.35;0.08;0.35" dur="2.5s" repeatCount="indefinite"/></circle>
+    <circle cx="70" cy="65" r="1.2" fill="rgba(196,154,60,0.25)"><animate attributeName="opacity" values="0.25;0.05;0.25" dur="3.5s" repeatCount="indefinite"/></circle>
+  </svg>
+</div>
 
 <svg id="topology-svg" viewBox="0 0 1000 1100" preserveAspectRatio="xMidYMid meet">
   <defs>
@@ -662,6 +936,16 @@ animate();
 updateMouseGlow();
 
 window.addEventListener('resize', () => { resize(); initStars(); });
+
+// ── Mode toggle ──
+document.getElementById('mode-toggle').addEventListener('click', e => {
+  const btn = e.target.closest('.mode-btn');
+  if (!btn || btn.classList.contains('active')) return;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const mode = btn.dataset.mode;
+  document.body.classList.toggle('cockpit-mode', mode === 'cockpit');
+});
 </script>
 </body>
 </html>
