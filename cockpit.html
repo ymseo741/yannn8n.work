@@ -742,25 +742,10 @@
       0 2px 0 rgba(0,0,0,0.55);
   }
 
-  .ctrl-btn[data-view="window"] {
-    --accent: #38d5cc;
-  }
-
   .ctrl-btn:nth-child(3n) { --accent: #c49a3c; }
   .ctrl-btn:nth-child(4n) { --accent: #4ade80; }
   .ctrl-btn:nth-child(5n) { --accent: #60a5fa; }
   .ctrl-btn:nth-child(6n) { --accent: #f472b6; }
-
-  .ctrl-btn[data-view="window"].active {
-    --accent: #38d5cc;
-    border-color: rgba(56,213,204,0.7);
-    background:
-      linear-gradient(180deg, rgba(37,76,85,0.94) 0 15%, rgba(12,24,35,0.98) 15% 100%);
-    box-shadow:
-      inset 0 0 18px rgba(56,213,204,0.08),
-      0 0 18px rgba(56,213,204,0.12),
-      0 2px 0 rgba(0,0,0,0.55);
-  }
 
   .ctrl-btn .led {
     width: 12px;
@@ -1022,7 +1007,6 @@
 
 <script>
 const cockpitButtons = [
-  { name: 'WINDOW',     url: '',                                  icon: '◉', desc: 'Favorite Video View',    led: 'led-tunnel', view: 'window' },
   { name: 'HERMES',     url: 'https://hermes.yannn8n.work',    icon: '⚡', desc: 'Agent Platform',       led: 'led-online' },
   { name: 'OPENCODE',   url: 'https://opencode.yannn8n.work',  icon: '⌨️', desc: 'Coding Agent',         led: 'led-online' },
   { name: 'OMNION',     url: 'https://omnion.yannn8n.work',    icon: '🔄', desc: 'Web Interface',        led: 'led-online' },
@@ -1038,7 +1022,7 @@ const cockpitButtons = [
 function renderButtons() {
   const grid = document.getElementById('controls');
   grid.innerHTML = cockpitButtons.map(s => `
-    <a class="ctrl-btn" href="${s.url || '#'}" ${s.view === 'window' ? '' : 'target="_blank" rel="noopener noreferrer"'} data-url="${s.url}" data-name="${s.name}" data-view="${s.view || 'service'}">
+    <a class="ctrl-btn" href="${s.url}" target="_blank" rel="noopener noreferrer" data-name="${s.name}">
       <span class="led ${s.led}"></span>
       <span class="icon">${s.icon}</span>
       <span class="info">
@@ -1047,44 +1031,6 @@ function renderButtons() {
       </span>
     </a>
   `).join('');
-  grid.addEventListener('click', handleControlClick);
-  setActiveButton('WINDOW');
-}
-
-function setActiveButton(name) {
-  document.querySelectorAll('.ctrl-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.name === name);
-  });
-}
-
-function showWindowVideo() {
-  document.getElementById('target-name').textContent = 'WINDOW · LOCAL SPACE FEED';
-  document.getElementById('target-hint').textContent = 'GENERATED LOOP · COCKPIT GLASS FIT';
-  setActiveButton('WINDOW');
-}
-
-function markServiceOpened(service) {
-  document.getElementById('target-name').textContent = `OPENED · ${service.name}`;
-  document.getElementById('target-hint').textContent = 'LOCAL SPACE FEED CONTINUES IN COCKPIT WINDOW';
-  setActiveButton(service.name);
-}
-
-function handleControlClick(event) {
-  const btn = event.target.closest('.ctrl-btn');
-  if (!btn) return;
-  const service = {
-    name: btn.dataset.name,
-    url: btn.dataset.url,
-    view: btn.dataset.view
-  };
-
-  if (service.view === 'window') {
-    event.preventDefault();
-    showWindowVideo();
-    return;
-  }
-
-  markServiceOpened(service);
 }
 
 function updateTime() {
